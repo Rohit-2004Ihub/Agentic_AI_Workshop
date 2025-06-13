@@ -158,3 +158,49 @@ GEMINI_API_KEY = "your_gemini_api_key"
 
 Run the agent
 python app.py
+
+
+🌍 Intelligent Travel Assistant AI
+An AI-powered travel assistant built using LangChain, Gemini, and Streamlit that helps users find:
+
+🌦️ Current weather at their destination
+
+🧭 Top tourist attractions in the city
+
+This app uses a multi-tool LangChain agent, combining a custom weather API tool and search agent to give a comprehensive response.
+
+🚀 Features
+Get real-time weather using WeatherAPI.
+
+Fetch top-rated attractions using web search (DuckDuckGo or Tavily).
+
+Built using LangChain’s create_tool_calling_agent() architecture.
+
+Uses Gemini AI for summarization and reasoning.
+
+Clean, interactive Streamlit UI.
+
+User Input (city) ─────────────┐
+                              ▼
+                       [ LangChain Agent ]
+                            /     \
+                 [Weather Tool]  [Search Tool]
+                            \     /
+                              ▼
+                Combined Final Answer (LLM)
+                              ▼
+                    Display via Streamlit UI
+
+structure
+
+
+travel_assistant_ai/
+│
+├── main.py                # Streamlit entry point
+├── travel_agent.py        # LangChain agent logic
+├── tools/
+│   ├── weather_tool.py    # Custom weather tool using WeatherAPI
+│   └── search_tool.py     # DuckDuckGo or Tavily-based web search tool
+├── .env                   # API keys
+├── README.md              # This file
+└── requirements.txt
