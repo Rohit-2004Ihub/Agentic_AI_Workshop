@@ -116,3 +116,45 @@ TAVILY_API_KEY = "your_tavily_api_key"
 
 Run the agent
 python main.py
+
+---------------------------------------------------Day5----------------------------------------------------
+
+
+
+# 📘 AI Study Assistant
+
+A lightweight, standalone Study Assistant that helps students summarize study material and automatically generate multiple-choice quiz questions — all without needing external vector databases or retrieval systems.
+
+Built with:
+- 🌐 [Streamlit](https://streamlit.io) for interactive UI
+- 🧠 [Gemini AI (Google Generative AI)](https://ai.google.dev/)
+- 🧱 [LangChain](https://www.langchain.com) for prompt orchestration
+- 📄 PyPDF2 for extracting content from PDFs
+
+---
+
+## 🚀 Features
+
+- ✅ Upload course documents in PDF format
+- ✨ Automatically summarize educational content into bullet points
+- 📝 Generate multiple-choice quiz questions with correct answers
+- 💡 Format output cleanly (no HTML tags like `<br>`)
+- ⚙️ Fully local, no external vector databases required
+
+---
+
+## 📁 Project Structure
+
+
+study_assistant/
+│
+├── app.py # Streamlit app (main UI)
+├── quiz_utils.py # Gemini-based summarization & quiz logic
+├── .env # Gemini API key (not checked into version control)
+
+api keys
+
+GEMINI_API_KEY = "your_gemini_api_key"
+
+Run the agent
+python app.py
