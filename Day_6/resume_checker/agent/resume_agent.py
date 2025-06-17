@@ -1,25 +1,58 @@
-from langchain.agents import initialize_agent, AgentType
-from langchain_google_genai import ChatGoogleGenerativeAI
-from dotenv import load_dotenv
-import os
-
+import json
 from tools.extractor import extract_resume_entities
-from tools.validator import validate_resume_timeline
+from tools.company_verifier import verify_companies
+from tools.timeline_validator import validate_timeline
+from tools.scorer import score_resume
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=GOOGLE_API_KEY)
+def clean_json_string(text: str) -> str:
+    """Remove markdown formatting and extract clean JSON string."""
+    text = text.strip()
+    if text.startswith("```"):
+        parts = text.split("```")
+        for part in parts:
+            if part.strip().startswith("{") or part.strip().startswith("["):
+                return part.strip()
+    return text
 
-tools = [extract_resume_entities, validate_resume_timeline]
+def extract_company_list(json_str: str) -> str:
+    """
+    Extracts unique company names from the experience section of the resume JSON.
+    Returns: JSON string like: [{"company": "Google"}, {"company": "OpenAI"}]
+    """
+    try:
+        data = json.loads(json_str)
+        experiences = data.get("experience", [])
+        companies = set()
 
-agent = initialize_agent(
-    tools=tools,
-    llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True
-)
+        for exp in experiences:
+            company = exp.get("company")
+            if company:
+                companies.add(company.strip())
 
-def run_resume_validation(text: str):
-    extracted = agent.run(f"Extract job experience from this resume: {text}")
-    validated = agent.run(f"Validate this resume for fraud and score it: {text}")
-    return extracted, validated
+        return json.dumps([{"company": c} for c in companies])
+
+    except Exception as e:
+        return json.dumps({"error": f"Company extraction failed: {str(e)}"})
+
+def run_resume_validation(resume_text: str):
+    # Step 1: Extract Entities
+    extracted_entities = extract_resume_entities.invoke(resume_text)
+    extracted_entities = clean_json_string(extracted_entities)
+
+    # Step 2: Extract and verify company list
+    company_list_json = extract_company_list(extracted_entities)
+    company_verification = verify_companies.invoke(company_list_json)
+    company_verification = clean_json_string(company_verification)
+
+    # Step 3: Validate Timeline
+    timeline_validation = validate_timeline.invoke(extracted_entities)
+    timeline_validation = clean_json_string(timeline_validation)
+
+    # Step 4: Score Resume
+    final_score_report = score_resume.invoke({
+        "extracted_entities": extracted_entities,
+        "company_check": company_verification,
+        "timeline_report": timeline_validation
+    })
+
+    return extracted_entities, company_verification, timeline_validation, final_score_report
