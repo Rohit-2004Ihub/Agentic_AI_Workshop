@@ -5,26 +5,29 @@ from tools.timeline_validator import validate_timeline
 from tools.scorer import score_resume
 
 def clean_json_string(text: str) -> str:
-    """Remove markdown formatting and extract clean JSON string."""
+    """Clean LLM output that may contain markdown (```json ... ```) and return pure JSON."""
     text = text.strip()
+
+    # Remove markdown ```json or ```
     if text.startswith("```"):
-        parts = text.split("```")
-        for part in parts:
-            if part.strip().startswith("{") or part.strip().startswith("["):
-                return part.strip()
+        text = text.replace("```json", "").replace("```", "").strip()
+
     return text
 
 def extract_company_list(json_str: str) -> str:
     """
-    Extracts unique company names from the experience section of the resume JSON.
+    Extracts unique company names from a list of job experiences.
     Returns: JSON string like: [{"company": "Google"}, {"company": "OpenAI"}]
     """
     try:
         data = json.loads(json_str)
-        experiences = data.get("experience", [])
-        companies = set()
 
-        for exp in experiences:
+        # ✅ Ensure the format is a list
+        if not isinstance(data, list):
+            return json.dumps({"error": "Expected a list of company objects."})
+
+        companies = set()
+        for exp in data:
             company = exp.get("company")
             if company:
                 companies.add(company.strip())
