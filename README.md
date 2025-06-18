@@ -239,15 +239,9 @@ clothing_competitor_ai/
 🔧 Requirements
 Install dependencies with:
 
-bash
-Copy
-Edit
 pip install -r requirements.txt
 Typical contents of requirements.txt:
 
-nginx
-Copy
-Edit
 streamlit
 langgraph
 langchain
