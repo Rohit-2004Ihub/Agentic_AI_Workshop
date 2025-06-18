@@ -204,3 +204,69 @@ travel_assistant_ai/
 ├── .env                   # API keys
 ├── README.md              # This file
 └── requirements.txt
+
+
+
+---------------------------------------------------Day8----------------------------------------------------
+
+
+🛍️ Clothing Competitor Analyzer
+This project is an intelligent business insight tool built with Streamlit, LangGraph, and Gemini AI. It helps clothing store owners analyze nearby competitors, simulate footfall trends, and receive business-friendly reports based on location.
+
+🚀 Features
+Enter latitude and longitude of your store location
+
+Get a list of nearby clothing competitors using Overpass API (OpenStreetMap)
+
+Simulate competitor footfall trends and peak hours
+
+Get a realistic business insight report using Gemini 1.5 Flash
+
+Built with a LangGraph agent workflow
+
+📁 Project Structure
+graphql
+Copy
+Edit
+clothing_competitor_ai/
+│
+├── app.py                  # Streamlit frontend
+├── graph.py                # LangGraph workflow and nodes
+├── agents.py               # Tools and agent functions
+├── tools/
+│   └── overpass_search.py  # Clothing store fetch logic using Overpass API
+└── README.md               # Project documentation
+🔧 Requirements
+Install dependencies with:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Typical contents of requirements.txt:
+
+nginx
+Copy
+Edit
+streamlit
+langgraph
+langchain
+langchain-google-genai
+requests
+🔑 API Keys
+Make sure to set your Gemini API key in graph.py:
+
+python
+Copy
+Edit
+ChatGoogleGenerativeAI(
+    model="gemini-1.5-flash",
+    api_key="YOUR_API_KEY"
+)
+▶️ How to Run
+Run the app with:
+
+bash
+Copy
+Edit
+streamlit run app.py
