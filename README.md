@@ -250,9 +250,7 @@ requests
 🔑 API Keys
 Make sure to set your Gemini API key in graph.py:
 
-python
-Copy
-Edit
+
 ChatGoogleGenerativeAI(
     model="gemini-1.5-flash",
     api_key="YOUR_API_KEY"
@@ -260,7 +258,5 @@ ChatGoogleGenerativeAI(
 ▶️ How to Run
 Run the app with:
 
-bash
-Copy
-Edit
+
 streamlit run app.py
