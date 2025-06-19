@@ -262,6 +262,135 @@ Run the app with:
 streamlit run app.py
 
 ---------------------------------------------------Day7----------------------------------------------------
+# 🤖 LangGraph Math & Chat Agent
+
+This project implements a conversational agent using **LangGraph**, **Streamlit**, and the **Gemini API**. The agent can:
+
+* Answer **general queries** using Gemini (LLM).
+* Handle **math-related queries** like addition, subtraction, multiplication, and division using custom Python functions.
+
+---
+
+## 🚀 Features
+
+* **LLM Integration**: Uses Gemini (via LangChain) for general conversation.
+* **Math Toolset**: Custom functions handle basic arithmetic operations.
+* **LangGraph Routing**: Dynamically routes queries based on intent.
+* **Streamlit UI**: Clean web interface for interactive querying.
+
+---
+
+## 🧠 Architecture
+
+```
+User Input
+    ↓
+ LangGraph
+    ├── If Math → Math Tool Node (plus, subtract, multiply, divide)
+    └── Else → Chatbot Node (Gemini LLM)
+    ↓
+  Output to Streamlit
+```
+
+---
+
+## 📁 File Structure
+
+```
+langgraph_math_agent/
+│
+├── app.py                # Streamlit app
+├── chatbot_agent.py      # Gemini API integration
+├── graph_builder.py      # LangGraph setup and routing
+├── math_tools.py         # Custom math functions
+└── .env                  # Contains GEMINI_API_KEY
+```
+
+---
+
+## 🧮 Math Functions
+
+All defined in `math_tools.py`:
+
+* `plus(a, b)` → returns a + b
+* `subtract(a, b)` → returns a - b
+* `multiply(a, b)` → returns a \* b
+* `divide(a, b)` → returns a / b (with division-by-zero handling)
+
+---
+
+## 🧠 LLM Integration
+
+The chatbot uses `ChatGoogleGenerativeAI` from `langchain-google-genai`, powered by **Gemini Pro**.
+
+Ensure your `.env` file includes:
+
+```bash
+GEMINI_API_KEY=your_google_gemini_api_key
+```
+
+---
+
+## 💻 How to Run
+
+### 1. Install dependencies
+
+```bash
+pip install streamlit langgraph langchain langchain-google-genai python-dotenv
+```
+
+### 2. Run Streamlit app
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## 💬 Example Queries
+
+### ✅ Math
+
+* "What is 5 plus 3?" → `8.0`
+* "Divide 10 by 2" → `5.0`
+* "Multiply 6 and 7" → `42.0`
+* "Subtract 12 from 30" → `18.0`
+
+### 🧠 General
+
+* "Who is the President of India?"
+* "Tell me a fun fact."
+* "Explain blockchain in simple terms."
+
+---
+
+## 📘 How It Works
+
+1. The user enters a query in the Streamlit UI.
+2. LangGraph checks for math keywords (`plus`, `divide`, etc.).
+3. If a math operation is detected, it parses numbers and invokes the appropriate tool.
+4. Otherwise, it sends the query to Gemini LLM.
+5. The final response is displayed in the UI.
+
+---
+
+## 🧪 Testing
+
+You can manually test the app through the Streamlit interface using the queries above.
+
+Want automated testing or file input integration? Just ask!
+
+---
+
+## 📄 License
+
+MIT License. Use it freely for educational or commercial purposes.
+
+---
+
+
+
+---------------------------------------------------Day8----------------------------------------------------
 
 
 
