@@ -207,7 +207,7 @@ travel_assistant_ai/
 
 
 
----------------------------------------------------Day8----------------------------------------------------
+---------------------------------------------------Day6----------------------------------------------------
 
 
 🛍️ Clothing Competitor Analyzer
@@ -260,3 +260,135 @@ Run the app with:
 
 
 streamlit run app.py
+
+---------------------------------------------------Day7----------------------------------------------------
+
+
+
+# 📘 Documentation – Multi-Agent Research and Summarization System
+
+## 📌 Overview
+
+This project is an intelligent agentic system built using **LangGraph**, **Gemini 1.5 Flash**, and **FAISS**, designed to handle user queries by routing them through specialized agents:
+- **LLM Agent** – Handles general reasoning tasks
+- **Web Research Agent** – Fetches current, real-time info from the web
+- **RAG Agent** – Answers queries using embedded local PDFs
+- **Summarization Agent** – Synthesizes results into a final structured response
+
+---
+
+## 🧠 System Architecture
+
+                       +-----------------+
+                       |     User Query   |
+                       +--------+--------+
+                                |
+                                v
+                         +-------------+
+                         | Router Agent| <--- Determines route
+                         +--+----------+
+                            |   |   |
+    +-----------------------+   |   +-------------------------+
+    |                           |                             |
+    v                           v                             v
++---------------+ +--------------------+ +----------------+
+| LLM Agent | | Web Research Agent | | RAG Agent |
+| (Gemini LLM) | | (live search API) | | (FAISS + PDFs) |
++-------+-------+ +---------+----------+ +--------+-------+
+\ | /
+_____________________|______________________/
+|
+v
++-----------------------------+
+| Summarization Agent (LLM) |
++--------------+--------------+
+|
+v
++------------+
+| Final Answer|
++-------------+
+
+
+---
+
+## 🧩 Agent Behavior
+
+### 🔹 Router Agent
+- Checks for keywords like `"latest"`, `"today"`, `"according to PDF"` to decide route
+- Fallbacks to Gemini 1.5 Flash if unsure
+
+### 🔹 LLM Agent
+- Uses Gemini 1.5 Flash to respond to general queries
+- No PDF or external data involved
+
+### 🔹 Web Research Agent
+- Performs a web search (can integrate Tavily, SerpAPI, or DuckDuckGo)
+- Extracts top few snippets and sends them for summarization
+
+### 🔹 RAG Agent
+- Uses **HuggingFace embeddings** (`all-MiniLM-L6-v2`)
+- Stores vectors via FAISS
+- Extracts top-`k` relevant chunks from PDFs
+- Gemini summarizes answers based on those documents
+
+### 🔹 Summarization Agent
+- Uses Gemini to synthesize and clean up the response
+
+---
+
+## ⚙️ LangGraph Workflow
+
+```python
+def build_graph():
+    builder = StateGraph(GraphState)
+
+    builder.add_node("router", router_node)
+    builder.add_node("llm", llm_node)
+    builder.add_node("web_research", web_node)
+    builder.add_node("rag", rag_node)
+    builder.add_node("summarization", summarize_node)
+
+    builder.set_entry_point("router")
+    builder.add_conditional_edges("router", lambda x: x["route"], {
+        "llm": "llm",
+        "web_research": "web_research",
+        "rag": "rag"
+    })
+    builder.add_edge("llm", "summarization")
+    builder.add_edge("web_research", "summarization")
+    builder.add_edge("rag", "summarization")
+    builder.add_edge("summarization", END)
+
+
+PDF Processing (RAG Agent)
+All PDFs are placed in rag_pdfs/
+
+On running main.py, they are:
+
+Parsed using PyPDF2
+
+Split into ~1000 token chunks with 200-token overlap
+
+Embedded using HuggingFace embeddings
+
+Stored into FAISS at rag_index/
+
+from langchain.embeddings import HuggingFaceEmbeddings
+vectorstore = FAISS.from_documents(split_docs, embeddings)
+vectorstore.save_local("rag_index")
+
+
+General Query
+
+"Explain the benefits of AI in education."
+→ Routed to: LLM Agent
+
+
+Real-Time Query
+"What is the latest news in climate change?"
+→ Routed to: Web Research Agent
+
+
+PDF-Based Query
+provide intoduction for the The Evolution and Impact of Digital Transformation on Global Economies form your data set
+→ Routed to: Web Research Agent
