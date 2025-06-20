@@ -155,40 +155,8 @@ CopyEdit
 }
 
 
-┌──────────────────────┐
-│    HTML Frontend     │
-│  (Upload PDF Form)   │
-└────────┬─────────────┘
-         │
-         ▼
-┌──────────────────────┐
-│     Django View      │
-│ index(request)       │
-└────────┬─────────────┘
-         │
-         ▼
-┌────────────────────────────┐
-│  PDF Extractor (utils)     │
-└────────┬───────────────────┘
-         │
-         ▼
-┌─────────────────────────────┐
-│  Agent Orchestrator         │
-│ (run all agents sequentially│
-└────────┬────────────────────┘
-         │
-         ▼
-┌────────┴────────┬───────────┬────┬────────┬────┬─────────┬───────┬────────────────┬
-│ Topic Extractor │ Task Scheduler │ Micro Goal  │ Backlog Manager │ Feedback &     │
-│ Agent           │ Agent          │ Mapper Agent│ Agent           │ Scoring Agents │
-└─────────────────┴────────────────┴─────────────┴─────────────────┴────────────────┴
-         │
-         ▼
-┌─────────────────────────────┐
-│ Django Template (index.html)│
-│ Render tasks, feedback,     │
-│ micro-goals, consistency    │
-└─────────────────────────────┘
+architucture link : https://www.mermaidchart.com/app/projects/64acaceb-f929-4e74-b573-9da37ef21d67/diagrams/9d4b4680-edc9-48df-a9f7-106889cbe591/share/invite/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudElEIjoiOWQ0YjQ2ODAtZWRjOS00OGRmLWE5ZjctMTA2ODg5Y2JlNTkxIiwiYWNjZXNzIjoiRWRpdCIsImlhdCI6MTc1MDQyNDgwOX0.bTshq36J40ImDOp-KtBWQmuGwyPH1n-do90z4W2KTxg
+
 
 
 
