@@ -206,10 +206,10 @@ CopyEdit
 └────────┬────────────────────┘
          │
          ▼
-┌────────┴────────┬───────────┬────────────┬────────────┬────────────┐
-│ Topic Extractor │ Task Scheduler │ Micro Goal  │ Backlog Manager │ Feedback &  │
-│ Agent           │ Agent         │ Mapper Agent│ Agent           │ Scoring Agents │
-└─────────────────┴─────────────┴─────────────┴─────────────┴────────────┘
+┌────────┴────────┬───────────┬────┬────────┬────┬─────────┬───────┬────────────────┬
+│ Topic Extractor │ Task Scheduler │ Micro Goal  │ Backlog Manager │ Feedback &     │
+│ Agent           │ Agent          │ Mapper Agent│ Agent           │ Scoring Agents │
+└─────────────────┴────────────────┴─────────────┴─────────────────┴────────────────┴
          │
          ▼
 ┌─────────────────────────────┐
