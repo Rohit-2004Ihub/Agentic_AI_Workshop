@@ -72,31 +72,19 @@ ai_study_planner/
 
 Installation
 1. Clone the Repository
-bash
-CopyEdit
 git clone https://github.com/your-org/ai-study-planner.git
 cd ai-study-planner
 
 2. Create and Activate Virtual Environment
-bash
-CopyEdit
-python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 
 3. Install Dependencies
-bash
-CopyEdit
 pip install -r requirements.txt
 
 4. Configure Environment
-Create a .env file and add your Gemini API key:
-ini
-CopyEdit
 GOOGLE_API_KEY=your_api_key_here
 
 5. Run Django Server
-bash
-CopyEdit
 python manage.py runserver
 
 Then open http://localhost:8000 in your browser.
@@ -104,50 +92,34 @@ Then open http://localhost:8000 in your browser.
 How It Works
 Agent Pipeline
 PDF Upload
-
-
 User uploads a learning roadmap, logs, or profile PDF.
 
 
 Text Extraction
-
-
 Extract raw text using PyPDF2.
 
 
 Topic Extraction Agent
-
-
 Identifies topics and study goals from the uploaded document.
 
 
 Task Scheduler Agent
-
-
 Generates 3–5 actionable tasks for the day using LLM.
 
 
 Micro Goal Mapper Agent
-
-
 Enriches each task with small achievable subtasks (micro-goals).
 
 
 Backlog Manager Agent
-
-
 Selects important backlog tasks and merges with today's plan.
 
 
 Feedback Analyzer Agent
-
-
 Reviews priority mix, diversity, and relevance using LLM + rule-based logic.
 
 
 Consistency Scorer Agent
-
-
 Calculates consistency score based on recent history and current plan.
 
 
@@ -223,13 +195,7 @@ CopyEdit
 
 Future Improvements
 Add user authentication and dashboards
-
-
 Integrate spaced repetition for task scheduling
-
-
 Save and visualize past plans using charts
-
-
 Enable RAG using FAISS + custom PDF dataset
 
